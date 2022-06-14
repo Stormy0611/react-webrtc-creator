@@ -6,6 +6,7 @@ const Screen = () => {
 
     }
 
+    //----------rtc----
     const peerConnections = {};
     const config = {
         iceServers: [
@@ -72,26 +73,26 @@ const Screen = () => {
         .then(getDevices)
         .then(gotDevices);
 
-    const getDevices = () => {
+    function getDevices() {
         return navigator.mediaDevices.enumerateDevices();
     }
 
-    const gotDevices = (deviceInfos) => {
+    function gotDevices(deviceInfos) {
         window.deviceInfos = deviceInfos;
         for (const deviceInfo of deviceInfos) {
             const option = document.createElement("option");
             option.value = deviceInfo.deviceId;
             if (deviceInfo.kind === "audioinput") {
-                option.text = deviceInfo.label || 'Microphone ${audioSelect.length + 1}';
+                option.text = deviceInfo.label || `Microphone ${audioSelect.length + 1}`;
                 audioSelect.appendChild(option);
             } else if (deviceInfo.kind === "videoinput") {
-                option.text = deviceInfo.label || 'Camera ${videoSelect.length + 1}';
+                option.text = deviceInfo.label || `Camera ${videoSelect.length + 1}`;
                 videoSelect.appendChild(option);
             }
         }
     }
 
-    const getStream = () => {
+    function getStream() {
         if (window.stream) {
             window.stream.getTracks().forEach(track => {
                 track.stop();
@@ -109,7 +110,7 @@ const Screen = () => {
             .catch(handleError);
     }
 
-    const gotStream = (stream) => {
+    function gotStream(stream) {
         window.stream = stream;
         audioSelect.selectedIndex = [...audioSelect.options].findIndex(
             option => option.text === stream.getAudioTracks()[0].label
@@ -121,26 +122,30 @@ const Screen = () => {
         socket.emit("broadcaster");
     }
 
-    const handleError = (error) => {
+    function handleError(error) {
         console.error("Error: ", error);
     }
+    //----rtc---
+
+
+
 
     return (
         <div className='Screen'>
             <div className='Main'>
-                <section className="select">
+                {/* <section class="select">
                     <label for="audioSource">Audio source: </label>
                     <select id="audioSource"></select>
                 </section>
 
-                <section className="select">
+                <section class="select">
                     <label for="videoSource">Video source: </label>
                     <select id="videoSource"></select>
                 </section>
 
                 <video playsinline autoplay muted></video>
                 <script src="/socket.io/socket.io.js"></script>
-                <script src="/broadcast.js"></script>
+                <script src="/broadcast.js"></script> */}
             </div>
             <div className='StartBtn' onClick={() => {
 
